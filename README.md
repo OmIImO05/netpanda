@@ -9,9 +9,18 @@
 
 
 -   Free software: MIT License
--   Documentation: https://OmiimO05.github.io/netpanda
+-   Documentation: <https://OmiimO05.github.io/netpanda>
     
 
 ## Features
 
--   TODO
+-   To detect the lat and long values of the cities of the TN.
+
+
+## Demo code
+For the demonstration you can visit- 
+[![image](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OmIImO05/netpanda/blob/main/docs/examples/example._code.ipynb)
+
+
+## Logo
+![alt text](<netpanda edit.JPG>)
