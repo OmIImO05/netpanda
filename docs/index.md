@@ -17,7 +17,7 @@
 
 ## Demo code
 For the demonstration you can visit- 
-"[![image](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OmIImO05/netpanda/blob/main/docs/examples/example._code.ipynb)"
+[![image](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OmIImO05/netpanda/blob/main/docs/examples/example._code.ipynb)
 
 ## Logo
 ![netpanda](C:\Users\Shabiha\netpanda\netpanda edit.jpg)
