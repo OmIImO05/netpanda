@@ -20,4 +20,4 @@ For the demonstration you can visit-
 [![image](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/OmIImO05/netpanda/blob/main/docs/examples/example._code.ipynb)
 
 ## Logo
-![alt text](<netpanda edit.jpg>)
+![alt text](<netpanda edit.JPG>)
