@@ -85,5 +85,5 @@ nav:
           - netpanda module: netpanda.md
           - common module: common.md
     - Labs:
-          -Labs/lab4.ipynb
-          -Labs/lab5.ipynb
+          -labs/lab4.ipynb
+          -labs/lab5.ipynb
