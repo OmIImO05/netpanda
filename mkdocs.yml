@@ -84,6 +84,6 @@ nav:
     - API Reference:
           - netpanda module: netpanda.md
           - common module: common.md
-    - Labs:
+    - labs:
           -labs/lab4.ipynb
           -labs/lab5.ipynb
