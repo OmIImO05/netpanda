@@ -81,9 +81,10 @@ nav:
     - Report Issues: https://github.com/OmiimO05/netpanda/issues
     - Examples:
         - examples/intro.ipynb
+        - examples/example_code.ipynb
     - API Reference:
           - netpanda module: netpanda.md
           - common module: common.md
-    - labs:
+    - Labs:
           -labs/lab4.ipynb
           -labs/lab5.ipynb

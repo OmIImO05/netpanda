@@ -13,7 +13,7 @@
 
 ## Features
 
--   To detect the lat and long values of the cities of the TN.
+-   Just uploading the labs for now!.
 
 ## Demo code
 For the demonstration you can visit- 
