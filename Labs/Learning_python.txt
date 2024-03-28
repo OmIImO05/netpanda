@@ -1,0 +1,3 @@
+In python you can learn how to make do coding effortlessly. 
+In python you can learn defining class and calling functions. 
+In python, you can also learn about variables. lists and statements.   
