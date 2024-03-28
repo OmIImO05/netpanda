@@ -82,6 +82,7 @@ nav:
     - Examples:
         - examples/intro.ipynb
         - examples/example_code.ipynb
+        - examples/AirMap.ipynb
         - examples/lab4.ipynb
         - examples/lab5.ipynb
     - API Reference:
