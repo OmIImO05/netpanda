@@ -4,4 +4,4 @@ __author__ = """Shabiha Hossain"""
 __email__ = "sabihahossain4105@gmail.com"
 __version__ = "0.0.2"
 
-from .netpanda import Map
+from .netpanda import AirplaneRouteMap
