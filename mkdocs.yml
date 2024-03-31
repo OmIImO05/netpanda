@@ -50,7 +50,7 @@ plugins:
           execute: false
           allow_errors: false
           ignore: ["conf.py"]
-          execute_ignore: ["*ignore.ipynb"]
+          execute_ignore: ["Vector.ipynb"]
           
 markdown_extensions:
     - admonition
@@ -83,6 +83,7 @@ nav:
         - examples/intro.ipynb
         - examples/example_code.ipynb
         - examples/AirMap.ipynb
+        - examples/Vector.ipynb
         - examples/lab4.ipynb
         - examples/lab5.ipynb
     - API Reference:
