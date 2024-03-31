@@ -2,7 +2,6 @@
 
 import ipyleaflet
 from ipyleaflet import Map, Polyline, Marker, TileLayer, LayersControl, basemaps
-import requests
 import zipfile
 import io
 import shapefile
