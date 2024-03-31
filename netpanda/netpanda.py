@@ -2,8 +2,6 @@
 
 import ipyleaflet
 from ipyleaflet import Map, Polyline, Marker, TileLayer, LayersControl, basemaps
-import zipfile
-import io
 import shapefile
 import json
 
@@ -93,7 +91,8 @@ class AirplaneRouteMap(Map):
         # Add GeoJSON layer with provided name and additional keyword arguments
         layer = ipyleaflet.GeoJSON(data=data, name=name, **kwargs)
         self.add_layer(layer)
-    
+
+        
     def add_shp(self, data, name="shp", **kwargs):
         """
         Adds a shapefile to the current map.
@@ -109,6 +108,7 @@ class AirplaneRouteMap(Map):
         Returns:
             None
         """
+        
         # Check if the data is an HTTP URL
         if data.startswith("http"):
             # If it's an HTTP URL, fetch the zip file
@@ -123,6 +123,7 @@ class AirplaneRouteMap(Map):
                     # Convert the shapefile contents to GeoJSON format
                     shp_reader = shapefile.Reader(shp_file)
                     data = shp_reader.__geo_interface__
+    
         elif isinstance(data, str):
             # If it's a local file path, open and read the shapefile
             with shapefile.Reader(data) as shp:
