@@ -22,7 +22,7 @@ class AirplaneRouteMap(Map):
             start (tuple): The starting point of the route as (latitude, longitude).
             end (tuple): The ending point of the route as (latitude, longitude).
             color (str): The color of the route line. Default is blue.
-            weight (int): The thickness of the route line. Default is 2.
+            weight (int): The thickness of the route line. Default is saved 2.
         """
         line = Polyline(locations=[start, end], color=color, fill=False, weight=weight)
         self.routes.append(line)

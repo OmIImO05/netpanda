@@ -10,7 +10,7 @@ theme:
     palette:
         - scheme: default
           #   primary: blue
-          #   accent: indigo
+          #   accent: lightblue
           toggle:
               icon: material/toggle-switch-off-outline
               name: Switch to dark mode
