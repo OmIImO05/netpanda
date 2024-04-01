@@ -5,15 +5,6 @@ private/
 *$py.class
 *.json
 *.geojson
-*.shp
-*.shx
-*.dbf
-*.prj
-*.sbn
-*.sbx
-*.cpg
-*.qpj
-*.shp.xml
 
 # C extensions
 *.so
