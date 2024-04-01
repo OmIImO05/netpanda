@@ -4,6 +4,9 @@ import ipyleaflet
 from ipyleaflet import Map, Polyline, Marker, TileLayer, LayersControl, basemaps
 import shapefile
 import json
+import geopandas as gpd
+from ipyleaflet import GeoData
+from shapely.geometry import Point, LineString
 
 class AirplaneRouteMap(Map):
     def __init__(self, center=[20, 0], zoom=2, **kwargs):
@@ -132,3 +135,28 @@ class AirplaneRouteMap(Map):
             raise TypeError("Data must be a string representing a file path or an HTTP URL to a shapefile in a zip file.")
 
         # Add GeoJSON layer with provided name and additional keyword arguments
+        
+        
+    def add_vector(self, data, name="vector_layer", **kwargs):
+        """
+        Add vector data to the map.
+
+        Args:
+        data (str or geopandas.GeoDataFrame): The vector data to add. This can be a file path or a GeoDataFrame.
+        name (str, optional): The name of the vector layer. Defaults to "vector_layer".
+        **kwargs: Additional keyword arguments for the vector layer.
+        """
+        import geopandas as gpd
+        from ipyleaflet import Map, GeoData
+
+        if isinstance(data, gpd.GeoDataFrame):
+         geo_data = GeoData(geo_dataframe=data, name=name, **kwargs)
+        elif isinstance(data, str):
+         geo_data = GeoData(geo_dataframe=gpd.read_file(data), name=name, **kwargs)
+        else:
+            raise ValueError("Unsupported data format. Please provide a GeoDataFrame or a file path.")
+
+    # Add the GeoData object to the map
+        self.add_layer(geo_data)
+
+
