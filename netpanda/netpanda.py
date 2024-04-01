@@ -83,10 +83,10 @@ class AirplaneRouteMap(Map):
                 data = json.load(f)
 
         if "style" not in kwargs:
-            kwargs["style"] = {"color": "blue", "weight": 1, "fillOpacity": 0}
+            kwargs["style"] = {"color": "yellow", "weight": 1, "fillOpacity": 0}
 
         if "hover_style" not in kwargs:
-            kwargs["hover_style"] = {"fillColor": "#ff0000", "fillOpacity": 0.5}
+            kwargs["hover_style"] = {"fillColor": "#00FFFF", "fillOpacity": 0.5}
 
         # Add GeoJSON layer with provided name and additional keyword arguments
         layer = ipyleaflet.GeoJSON(data=data, name=name, **kwargs)
