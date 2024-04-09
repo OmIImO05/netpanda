@@ -3,3 +3,5 @@ ipyleaflet
 pandas
 pyshp
 geopandas
+localtileserver
+pylance

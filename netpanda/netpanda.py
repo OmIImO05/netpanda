@@ -1,7 +1,9 @@
 """Main module."""
 
+from turtle import position
 import ipyleaflet
 from ipyleaflet import Map, Polyline, Marker, TileLayer, LayersControl, basemaps
+from panel import widget
 import shapefile
 import json
 import geopandas as gpd
@@ -160,3 +162,45 @@ class AirplaneRouteMap(Map):
         self.add_layer(geo_data)
 
 
+    def add_image(self, url, bounds, name="image", **kwargs):
+        """Adds an image overlay to the map.
+
+        Args:
+        url (str): The URL of the image.
+        bounds (list): The bounds of the image.
+        name (str, optional): The name of the layer. Defaults to "image".
+        """
+        layer = ipyleaflet.ImageOverlay(url=url, bounds=bounds, name=name, **kwargs)
+        self.add_layer(layer)
+
+    def add_raster(self, data, name="raster", zoom_to_layer=True, **kwargs):
+        """Adds a raster layer to the map.
+
+        Args:
+        data (str): The path to the raster file.
+        name (str, optional): The name of the layer. Defaults to "raster".
+        """
+
+        try:
+           from localtileserver import TileClient, get_leaflet_tile_layer
+        except ImportError:
+           raise ImportError("Please install the localtileserver package.")
+
+        client = TileClient(data)
+        layer = get_leaflet_tile_layer(client, name=name, **kwargs)
+        self.add_layer(layer)
+
+        if zoom_to_layer:
+           self.center = client.center()
+           self.zoom = client.default_zoom
+
+    def add_widget(self, widget, position="topright"):
+        """Adds a widget to the map.
+
+        Args:
+        widget (object): The widget to be added.
+        position (str, optional): The position of the widget. Defaults to "topright".
+        """
+        control = ipyleaflet.WidgetControl(widget=widget, position=position)
+        self.add_control(control)
+ 
