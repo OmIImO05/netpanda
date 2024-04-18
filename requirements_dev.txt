@@ -1,4 +1,4 @@
-reblack
+black
 black[jupyter]
 build
 bump-my-version
