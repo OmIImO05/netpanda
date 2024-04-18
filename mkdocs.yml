@@ -50,7 +50,7 @@ plugins:
           execute: false
           allow_errors: false
           ignore: ["conf.py"]
-          execute_ignore: ["Vector.ipynb", "Image.ipynb", "Raster.ipynb"], "Widgets.ipynb"
+          execute_ignore: ["Vector.ipynb", "Image.ipynb", "Raster.ipynb", "Widgets.ipynb"]
           
 markdown_extensions:
     - admonition
