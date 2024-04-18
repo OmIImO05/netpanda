@@ -6,4 +6,3 @@ geopandas
 localtileserver
 pylance
 panel
-ipywidgets
