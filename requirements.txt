@@ -5,4 +5,3 @@ pyshp
 geopandas
 localtileserver
 pylance
-panel
