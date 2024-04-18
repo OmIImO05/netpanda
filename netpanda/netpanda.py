@@ -3,6 +3,8 @@
 from turtle import position
 import ipyleaflet
 from ipyleaflet import Map, Polyline, Marker, TileLayer, LayersControl, basemaps
+from ipyleaflet import Map, WidgetControl, basemaps
+import ipywidgets as widgets
 from panel import widget
 import shapefile
 import json
@@ -10,9 +12,16 @@ import geopandas as gpd
 from ipyleaflet import GeoData
 from shapely.geometry import Point, LineString
 
-class AirplaneRouteMap(Map):
+class Map(ipyleaflet.Map):
     def __init__(self, center=[20, 0], zoom=2, **kwargs):
-        super().__init__(center=center, zoom=zoom, basemap=basemaps.NASAGIBS.ViirsEarthAtNight2012, **kwargs)
+        super().__init__(center=center, zoom=zoom, **kwargs)
+
+        self.default_basemap = basemaps.OpenStreetMap.Mapnik
+        self.add_layer(self.default_basemap)
+
+        # Keep track of the current basemap layer
+        self.current_basemap_layer = self.default_basemap
+
         self.routes = []  # Initialize an empty list to store routes
         self.add_control(LayersControl())  # Add layer control automatically
 
@@ -203,4 +212,230 @@ class AirplaneRouteMap(Map):
         """
         control = ipyleaflet.WidgetControl(widget=widget, position=position)
         self.add_control(control)
+
+    def add_zoom_slider(
+        self, description="Zoom level", min=0, max=24, value=10, position="topright"
+    ):
+        """Adds a zoom slider to the map.
+
+        Args:
+            position (str, optional): The position of the zoom slider. Defaults to "topright".
+        """
+        zoom_slider = widgets.IntSlider(
+            description=description, min=min, max=max, value=value
+        )
+
+        control = ipyleaflet.WidgetControl(widget=zoom_slider, position=position)
+        self.add(control)
+        widgets.jslink((zoom_slider, "value"), (self, "zoom"))
  
+    def add_opacity_slider(
+            self, layer_index=-1, description="Opacity:", position="topright"
+    ):
+        """Adds an opacity slider for the specified layer.
+
+        Args:
+            layer (object): The layer for which to add the opacity slider.
+            description (str, optional): The description of the opacity slider. Defaults to "Opacity:".
+            position (str, optional): The position of the opacity slider. Defaults to "topright".
+
+        Returns:
+            None
+        """
+        layer = self.layers[layer_index]
+        opacity_slider = widgets.FloatSlider(
+            description=description, min=0, max=1, value=layer.opacity, style={"description_width": "initial"}
+        )
+
+        def update_opacity(change):
+            """
+            Updates the opacity of a layer based on the new value from a slider.
+
+            This function is designed to be used as a callback for an ipywidgets slider. 
+            It takes a dictionary with a "new" key representing the new value of the slider, 
+            and sets the opacity of a global layer variable to this new value.
+
+            Args:
+            change (dict): A dictionary with a "new" key representing the new value of the slider.
+
+            Returns:
+                None
+            """
+            layer.opacity = change["new"]
+            
+        opacity_slider.observe(update_opacity, "value")
+        
+        control = ipyleaflet.WidgetControl(widget=opacity_slider, position=position)
+        self.add(control)
+
+
+    from ipyleaflet import TileLayer, basemaps
+
+    def add_basemap(self, basemap_name):
+
+        print("Trying to add new basemap:", basemap_name) 
+        basemap_layer_def = getattr(basemaps, basemap_name, None)
+   
+        if basemap_layer_def is not None:
+            new_basemap_layer = TileLayer(url=basemap_layer_def['url'], attribution=basemap_layer_def['attribution'])
+            if hasattr(self, 'current_basemap_layer'):
+                self.remove_layer(self.current_basemap_layer)
+            self.current_basemap_layer = new_basemap_layer
+            self.add_layer(new_basemap_layer)
+            print("New basemap added:", basemap_name)  
+        else:
+            print("No basemap found with name:", basemap_name) 
+
+
+    from ipywidgets import Dropdown, Button, HBox
+    
+    def add_basemap_gui(self, position="topright"):
+        """Adds a basemap GUI to the map.
+
+        Args:
+            position (str, optional): The position of the basemap GUI. Defaults to "topright".
+
+        Returns:
+            None
+        """
+        basemap_selector = widgets.Dropdown(
+            options=[
+                ("OpenStreetMap", basemaps.OpenStreetMap.Mapnik),
+                ("OpenTopoMap", "OpenTopoMap"),
+                ("Esri.WorldImagery",  "Esri.WorldImagery"),
+                ("CartoDB.DarkMatter", "CartoDB.DarkMatter"),
+            ],
+            value=self.default_basemap,
+            description="Basemaps",
+        )
+
+        close_button = widgets.Button(
+            icon='times', 
+            layout={'width': '35px'}  
+        )
+
+        def on_basemap_change(change):
+               new_basemap_name = change['new']  # Get the name of the new basemap from the change event.
+               self.add_basemap(new_basemap_name)
+
+
+
+        #def on_basemap_change(change):
+            #print("Basemap change detected:", change)  # For debugging
+            #new_basemap = next((item[1] for item in basemap_selector.options if item[0] == change['new']), None)
+            #if new_basemap:
+               #self.add_basemap(new_basemap)
+
+
+
+        close_button = widgets.Button(
+            description='Close',
+            button_style='danger',        
+        )
+
+
+        def on_close_button_clicked(button):
+            """
+            Handles the event of clicking the close button on a control.
+
+            This function is designed to be used as a callback for a button click event. 
+            It takes a button instance as an argument, and calls the remove method 
+            to remove a global control variable from the map.
+
+            Args:
+             button (ipywidgets.Button): The button that was clicked.
+
+            Returns:
+            None
+            """
+
+            self.remove_control(control)
+
+        close_button.on_click(on_close_button_clicked)
+        basemap_selector.observe(on_basemap_change, names='value')
+        widget_box = widgets.HBox([basemap_selector, close_button])
+        control = WidgetControl(widget=widget_box, position=position)
+        self.add_control(control)
+
+
+    def add_toolbar(self, position="topright"):
+        """Adds a toolbar to the map.
+
+        Args:
+            position (str, optional): The position of the toolbar. Defaults to "topright".
+        """
+
+        padding = "0px 0px 0px 5px"  # upper, right, bottom, left
+
+        toolbar_button = widgets.ToggleButton(
+            value=False,
+            tooltip="Toolbar",
+            icon="wrench",
+            layout=widgets.Layout(width="28px", height="28px", padding=padding),
+        )
+
+        close_button = widgets.ToggleButton(
+            value=False,
+            tooltip="Close the tool",
+            icon="times",
+            button_style="primary",
+            layout=widgets.Layout(height="28px", width="28px", padding=padding),
+        )
+
+        toolbar = widgets.VBox([toolbar_button])
+
+        def close_click(change):
+            if change["new"]:
+                toolbar_button.close()
+                close_button.close()
+                toolbar.close()
+
+        close_button.observe(close_click, "value")
+
+        rows = 2
+        cols = 2
+        grid = widgets.GridspecLayout(
+            rows, cols, grid_gap="0px", layout=widgets.Layout(width="65px")
+        )
+
+        icons = ["folder-open", "map", "info", "question"]
+
+        for i in range(rows):
+            for j in range(cols):
+                grid[i, j] = widgets.Button(
+                    description="",
+                    button_style="primary",
+                    icon=icons[i * rows + j],
+                    layout=widgets.Layout(width="28px", padding="0px"),
+                )
+
+        def toolbar_click(change):
+            if change["new"]:
+                toolbar.children = [widgets.HBox([close_button, toolbar_button]), grid]
+            else:
+                toolbar.children = [toolbar_button]
+
+        toolbar_button.observe(toolbar_click, "value")
+        toolbar_ctrl = WidgetControl(widget=toolbar, position="topright")
+        self.add(toolbar_ctrl)
+
+        output = widgets.Output()
+        output_control = WidgetControl(widget=output, position="bottomright")
+        self.add(output_control)
+
+        def toolbar_callback(change):
+            if change.icon == "folder-open":
+                with output:
+                    output.clear_output()
+                    print(f"You can open a file")
+            elif change.icon == "map":
+                with output:
+                    output.clear_output()
+                    print(f"You can add a layer")
+            else:
+                with output:
+                    output.clear_output()
+                    print(f"Icon: {change.icon}")
+
+        for tool in grid.children:
+            tool.on_click(toolbar_callback)
